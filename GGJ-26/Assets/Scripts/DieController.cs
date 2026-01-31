@@ -20,6 +20,6 @@ public class DieController : MonoBehaviour
         yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName("Die"));
         animator.SetBool("isDead", true);
         yield return new WaitUntil(() => !animator.GetCurrentAnimatorStateInfo(0).IsName("Die"));
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

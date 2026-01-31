@@ -27,7 +27,7 @@ public class EmoteTimer : MonoBehaviour
             {
                 foreach (var agent in agents)
                 {
-                    agent.GetComponent<EmoteController>().EmoteDelayed();
+                    if(agent.isActiveAndEnabled) agent.GetComponent<EmoteController>().EmoteDelayed();
                 }
             }
         }
