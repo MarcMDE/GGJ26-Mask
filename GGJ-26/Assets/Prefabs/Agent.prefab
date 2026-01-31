@@ -178,3 +178,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ea5f8b071535d3409e5ec210ca13ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  minWaitTime: 1
+  maxWaitTime: 5
+  minSpeed: 1.5
+  maxSpeed: 4.5
+  minAcceleration: 8
+  maxAcceleration: 20
+  pushStrength: 0.05
