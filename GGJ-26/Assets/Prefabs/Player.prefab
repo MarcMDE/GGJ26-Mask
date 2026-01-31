@@ -100,7 +100,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3492552184318500794}
   - component: {fileID: 3305054285297146164}
-  - component: {fileID: 8202894205089921504}
   - component: {fileID: 6497344864954223538}
   - component: {fileID: 8677190643019477521}
   - component: {fileID: 8978851474705705912}
@@ -108,9 +107,11 @@ GameObject:
   - component: {fileID: 1394984962271518810}
   - component: {fileID: 5274683480064567429}
   - component: {fileID: 8616147067144174787}
+  - component: {fileID: 5599029549954391731}
+  - component: {fileID: 7698849411205688659}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,31 +155,6 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!143 &8202894205089921504
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3530483087262552987}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6497344864954223538
 MonoBehaviour:
@@ -256,7 +232,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525df7b48fc071740a77352148110f06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mask.Player.PlayerMovementController
-  moveSpeed: 2
+  moveSpeed: 5
+  acceleration: 15
+  rotationSpeed: 10
+  pushForce: 20
+  collisionSlowdown: 0.4
+  recoveryRate: 2
 --- !u!114 &1394984962271518810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,7 +264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f5586927890964984ecb068d3f2406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mask.Player.PlayerEmoteController
-  emoteCoolDown: 2
+  emoteDuration: 1.2
 --- !u!114 &8616147067144174787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +277,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0b4dbc6bd9cb5478e19b0efb08cba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mask.Player.PlayerInputHandler
+--- !u!54 &5599029549954391731
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3530483087262552987}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
+--- !u!208 &7698849411205688659
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3530483087262552987}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.4, y: 1, z: 0.4}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &4668689318409347930
 GameObject:
   m_ObjectHideFlags: 0
