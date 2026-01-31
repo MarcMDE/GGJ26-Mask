@@ -19,7 +19,7 @@ namespace Mask.Player
 
         private Rigidbody rb;
         private NavMeshAgent navAgent;
-        private Vector2 moveInput;
+        private Vector3 inputDirection;
         private bool isEmoteActive;
         private float currentSpeedModifier = 1.0f;
         private bool isAttackActive;
@@ -39,26 +39,29 @@ namespace Mask.Player
 
         void FixedUpdate()
         {
-            
             Move();
         }
 
         public void SetMoveInput(Vector2 i)
         {
-            moveInput = i;
+            Vector3 heading = new Vector3(i.x, 0, i.y);
+            inputDirection = heading.normalized;
         }
 
         void Move()
         {
-            //if (state.State != States.NONE) return;
+
             if (GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack") ||
                 GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Emote")
             ) return;
 
+            if (inputDirection.magnitude > 0.05f)
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(inputDirection), Time.fixedDeltaTime * rotationSpeed);
 
             // Calculate direction based on input
-            Vector3 targetDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
-            Vector3 targetVelocity = targetDirection * moveSpeed;
+            Vector3 targetVelocity = inputDirection * moveSpeed;
+
+            
 
             // Apply force to reach target velocity (Physical movement)
             Vector3 velocityChange = targetVelocity - rb.linearVelocity;
