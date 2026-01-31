@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveInput;
     private bool isEmoteActive;
     private float currentSpeedModifier = 1.0f;
+    private bool isAttackActive;
 
     void Awake()
     {
@@ -39,7 +40,8 @@ public class PlayerController : MonoBehaviour
     }
 
     public void OnMove(InputValue value) => moveInput = value.Get<Vector2>();
-    public void OnAction(InputValue value) => isEmoteActive = true;
+    public void OnEmote(InputValue value) => isEmoteActive = true;
+    public void OnAttack(InputValue value) => isAttackActive = true;
 
     void Update()
     {
@@ -51,6 +53,7 @@ public class PlayerController : MonoBehaviour
 
         HandleRotation();
         HandleEmote();
+        HandleAttack();
     }
 
     void FixedUpdate()
@@ -85,7 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isEmoteActive)
         {
-            Debug.Log("Emote active");
+            Debug.Log($"{gameObject.name} Emote");
             isEmoteActive = false;
         }
     }
@@ -111,4 +114,13 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    void HandleAttack()
+    {
+        if (isAttackActive)
+        {
+            Debug.Log($"{gameObject.name} Attack");
+            isAttackActive = false;
+        }
+    }
+    
 }
