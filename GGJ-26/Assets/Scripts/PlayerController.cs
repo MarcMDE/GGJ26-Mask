@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private Vector2 moveInput;
     private Vector2 lookInput;
-    private bool isGamepad;
+    private bool isEmoteActive;
 
     void Awake()
     {
@@ -17,12 +17,13 @@ public class PlayerController : MonoBehaviour
 
     // Estos métodos son llamados por el componente Player Input
     public void OnMove(InputValue value) => moveInput = value.Get<Vector2>();
-    public void OnLook(InputValue value) => lookInput = value.Get<Vector2>();
+    public void OnAction(InputValue value) => isEmoteActive = true;
 
     void Update()
     {
         HandleMovement();
         HandleRotation();
+        HandleEmote();
     }
 
     void HandleMovement()
@@ -35,5 +36,14 @@ public class PlayerController : MonoBehaviour
     void HandleRotation()
     {
         
+    }
+
+    void HandleEmote()
+    {
+        if (isEmoteActive)
+        {
+            Debug.Log("Emote active");
+            isEmoteActive = false;
+        }
     }
 }
