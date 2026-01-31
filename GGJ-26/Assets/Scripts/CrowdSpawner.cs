@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.AI;
-using Unity.AI.Navigation; // Required for the new NavMeshSurface
+using Unity.AI.Navigation;
+using System.Collections.Generic;
+using System.Collections;
+using Mask.Player; // Required for the new NavMeshSurface
 
 public class BoundSpawner : MonoBehaviour
 {
@@ -10,10 +13,15 @@ public class BoundSpawner : MonoBehaviour
     [SerializeField] private NavMeshSurface surface;
     private Bounds spawnBounds;
 
+    [SerializeField] private float emotePeriod = 5;
+
+    private List<CrowdAgent> agents = new List<CrowdAgent>();
+
     void Start()
     {
         CalculateBounds();
         SpawnCrowd();
+        StartCoroutine(AgentsEmote());
     }
 
     void CalculateBounds()
@@ -57,11 +65,26 @@ public class BoundSpawner : MonoBehaviour
                 if (newAgent.TryGetComponent<CrowdAgent>(out CrowdAgent crowdScript))
                 {
                     crowdScript.InitializeBounds(spawnBounds);
+                    agents.Add(crowdScript);
                 }
-
+                
                 spawned++;
             }
         }
+    }
+
+    IEnumerator AgentsEmote()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(emotePeriod);
+
+            foreach (var agent in agents)
+            {
+                agent.GetComponent<EmoteController>().EmoteDelayed();
+            }
+        }
+        
     }
 
     // This shows the bounds in the editor so you can verify the area

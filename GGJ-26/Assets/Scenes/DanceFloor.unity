@@ -977,6 +977,7 @@ MonoBehaviour:
   agentPrefab: {fileID: 6162291940168617682, guid: e8d2fa723e2b467439d8cd4b89c69a2f, type: 3}
   agentCount: 19
   surface: {fileID: 1125246677}
+  emotePeriod: 5
 --- !u!4 &1468681045
 Transform:
   m_ObjectHideFlags: 0

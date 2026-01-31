@@ -7,6 +7,8 @@ namespace Mask.Player
     {
         private Animator animator;
 
+        [SerializeField] private float maxEmoteDelay = 0.2f;
+
         void Awake()
         {
             animator = GetComponent<Animator>();
@@ -20,6 +22,19 @@ namespace Mask.Player
         public void Emote()
         {
             animator.SetBool("EmoteQueued", true);
+        }
+
+        public void EmoteDelayed()
+        {
+            StartCoroutine(EmoteDelayedCR());
+        }
+
+        private IEnumerator EmoteDelayedCR()
+        {
+            float delay = Random.Range(0, maxEmoteDelay);
+            yield return new WaitForSeconds(delay);
+
+            Emote();
         }
     }
 }
