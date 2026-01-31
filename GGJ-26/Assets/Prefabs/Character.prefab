@@ -184,6 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f5586927890964984ecb068d3f2406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mask.Player.PlayerEmoteController
+  maxEmoteDelay: 0.5
 --- !u!54 &8613281010484452955
 Rigidbody:
   m_ObjectHideFlags: 0
