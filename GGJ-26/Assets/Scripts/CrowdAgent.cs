@@ -37,6 +37,9 @@ public class CrowdAgent : MonoBehaviour
     private Vector3 currentMoveTarget;
     private float myCheckInterval; // Per-agent unique interval
 
+    [Header("Animator")]
+    private Animator animator;
+
     public void InitializeBounds(Bounds bounds)
     {
         wanderBounds = bounds;
@@ -47,6 +50,7 @@ public class CrowdAgent : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
 
         // Set a unique rhythm for this specific agent
         myCheckInterval = Random.Range(minCheckInterval, maxCheckInterval);
@@ -68,6 +72,11 @@ public class CrowdAgent : MonoBehaviour
     void Update()
     {
         if (!boundsSet) return;
+        if (animator.GetBool("isDead"))
+        {
+            StopNavigation();
+            return;
+        }
 
         currentSpeedModifier = Mathf.MoveTowards(currentSpeedModifier, 1.0f, Time.deltaTime * recoveryRate);
         agent.speed = baseTargetSpeed * currentSpeedModifier;
@@ -147,6 +156,12 @@ public class CrowdAgent : MonoBehaviour
             return hit.position;
         }
         return transform.position;
+    }
+
+    public void StopNavigation()
+    {
+        agent.isStopped = true;
+        this.enabled = false;
     }
 
     void OnCollisionStay(Collision collision)
