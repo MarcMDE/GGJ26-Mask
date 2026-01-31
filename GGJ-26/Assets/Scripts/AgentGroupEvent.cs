@@ -1,9 +1,12 @@
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class AgentGroupEvent : MonoBehaviour
 {
     [SerializeField] private float groupPeriodMin = 5;
     [SerializeField] private float groupPeriodMax = 20;
+
+    [SerializeField] private NavMeshSurface surface;
 
     private CrowdSpawner crowdSpawner;
     private float nextEventCounter;
@@ -28,9 +31,6 @@ public class AgentGroupEvent : MonoBehaviour
 
     private void TriggerEvent()
     {
-        
-
-
         //var points = NavMeshUtils.GetMultipleSafePoints();
     }
 

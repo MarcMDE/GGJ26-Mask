@@ -61,6 +61,8 @@ public class CrowdSpawner : MonoBehaviour
                 // Hand the bounds to the agent
                 if (newAgent.TryGetComponent<CrowdAgent>(out CrowdAgent crowdScript))
                 {
+                    newAgent.GetComponent<DieController>().SetDieDelegate(RemoveAgent);
+
                     crowdScript.InitializeBounds(spawnBounds);
                     agents.Add(crowdScript);
                 }
@@ -70,18 +72,15 @@ public class CrowdSpawner : MonoBehaviour
         }
     }
 
+    public void RemoveAgent(GameObject agent)
+    {
+        var crowdAgent = agent.GetComponent<CrowdAgent>();
+        agents.Remove(crowdAgent);
+        Destroy(agent);
+    }
+
     public List<CrowdAgent> GetAgents()
     {
         return agents;
-    }
-
-    // This shows the bounds in the editor so you can verify the area
-    private void OnDrawGizmos()
-    {
-        if (spawnBounds != null)
-        {
-            Gizmos.color = new Color(0, 1, 0, 0.2f);
-            Gizmos.DrawCube(spawnBounds.center, spawnBounds.size);
-        }
     }
 }
