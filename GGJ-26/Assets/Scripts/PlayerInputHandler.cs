@@ -5,13 +5,13 @@ namespace Mask.Player
 {
     [RequireComponent(typeof(PlayerMovementController))]
     [RequireComponent(typeof(PlayerAttackController))]
-    [RequireComponent(typeof(PlayerEmoteController))]
+    [RequireComponent(typeof(EmoteController))]
 
     public class PlayerInputHandler : MonoBehaviour
     {
         private PlayerMovementController movementController;
         private PlayerAttackController attackController;
-        private PlayerEmoteController emoteController;
+        private EmoteController emoteController;
         public void OnMove(InputValue value) => movementController.SetMoveInput(value.Get<Vector2>());
         public void OnEmote(InputValue value) => emoteController.Emote();
         public void OnAttack(InputValue value) => attackController.Attack();
@@ -20,7 +20,7 @@ namespace Mask.Player
         {
             movementController = GetComponent<PlayerMovementController>();
             attackController = GetComponent<PlayerAttackController>();
-            emoteController = GetComponent<PlayerEmoteController>();
+            emoteController = GetComponent<EmoteController>();
         }
     }
 }

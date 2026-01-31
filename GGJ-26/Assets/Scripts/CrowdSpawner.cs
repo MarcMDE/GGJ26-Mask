@@ -57,7 +57,6 @@ public class BoundSpawner : MonoBehaviour
                 if (newAgent.TryGetComponent<CrowdAgent>(out CrowdAgent crowdScript))
                 {
                     crowdScript.InitializeBounds(spawnBounds);
-                    Debug.Log(spawnBounds);
                 }
 
                 spawned++;

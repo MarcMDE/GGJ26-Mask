@@ -50,8 +50,11 @@ namespace Mask.Player
 
         void Move()
         {
-            Debug.Log(state.State);
-            if (state.State != States.NONE) return;
+            //if (state.State != States.NONE) return;
+            if (GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack") ||
+                GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Emote")
+            ) return;
+
 
             // Calculate direction based on input
             Vector3 targetDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;

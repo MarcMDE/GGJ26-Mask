@@ -3,50 +3,56 @@ using System.Collections;
 
 namespace Mask.Player
 {
-    public class PlayerAttackController : PlayerControllerBase
+    public class PlayerAttackController : MonoBehaviour
     {
         [SerializeField] private float attackCoolDown = 3f;
-        [SerializeField] private float attackDuration = 1.5f;
         private Animator animator;
-        private bool isAttackAvailable;
-        public bool IsAttacking { get; private set; }
+        bool isAttackAvailable;
 
-        new void Awake()
+        void Awake()
         {
-            base.Awake();
             animator = GetComponent<Animator>();
         }
 
         void Start()
         {
             isAttackAvailable = true;
-            IsAttacking = false;
         }
 
         public void Attack()
         {
-            if (!isAttackAvailable) return;
-            if (state.TrySetState(States.ATTACK) == false) return;
+            StartCoroutine(AttackCR());
+            // TODO: Logica atac
+        }
 
-            animator.SetTrigger("AttackTrigger");
-            Debug.Log($"{gameObject.name} Attack");
+        IEnumerator AttackCR()
+        {
+            if (!isAttackAvailable) yield break;
+
             isAttackAvailable = false;
-            IsAttacking = true;
-            StartCoroutine("AttackDurationCoroutine", attackDuration);
-            StartCoroutine("AttackCoolDownCoroutine", attackCoolDown);
+            animator.SetBool("AttackQueued", true);
+
+
+            while (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") )
+            {
+                if (!animator.GetBool("AttackQueued"))
+                {
+                    isAttackAvailable = true;
+                    yield break;
+                }
+                yield return null;
+            }
+
+            yield return new WaitUntil(() => !animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"));
+
+            yield return AttackCoolDownCoroutine(attackCoolDown);
+
         }
 
         IEnumerator AttackCoolDownCoroutine(float duration)
         {
             yield return new WaitForSeconds(duration);
             isAttackAvailable = true;
-        }
-
-        IEnumerator AttackDurationCoroutine(float duration)
-        {
-            yield return new WaitForSeconds(duration);
-            IsAttacking = false;
-            state.TrySetState(States.NONE);
         }
     }
 }
