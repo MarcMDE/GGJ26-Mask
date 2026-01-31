@@ -914,7 +914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoundSpawner
   agentPrefab: {fileID: 2984136992183345480, guid: 358f79a03d6b51a429248c659647ef76, type: 3}
-  agentCount: 10
+  agentCount: 19
   surface: {fileID: 1125246677}
 --- !u!4 &1468681045
 Transform:
@@ -1069,6 +1069,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7226171194124516327, guid: 358f79a03d6b51a429248c659647ef76, type: 3}
+      propertyPath: currentDance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8580378365379128424, guid: 358f79a03d6b51a429248c659647ef76, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.34082
@@ -1190,7 +1194,7 @@ MonoBehaviour:
   moveSpeed: 5
   acceleration: 15
   rotationSpeed: 10
-  pushForce: 10
+  pushForce: 20
   collisionSlowdown: 0.4
   recoveryRate: 2
 --- !u!23 &4775976525466248633

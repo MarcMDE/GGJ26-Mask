@@ -9,6 +9,12 @@ public class CrowdAgent : MonoBehaviour
     public float minWaitTime = 1f;
     public float maxWaitTime = 5f;
 
+    [Header("Conga-Line Breaker")]
+    [Range(0, 1)] public float deviationProbability = 0.4f;
+    public float deviationRadius = 3.0f;
+    public float minCheckInterval = 1.0f; // Lower bound for the clock
+    public float maxCheckInterval = 4.0f; // Upper bound for the clock
+
     [Header("Randomized Speed")]
     public float minSpeed = 1.5f;
     public float maxSpeed = 4.5f;
@@ -16,9 +22,9 @@ public class CrowdAgent : MonoBehaviour
     public float maxAcceleration = 20f;
 
     [Header("Advanced Physics")]
-    public float pushForce = 5.0f;        // Strength of the nudge
-    public float collisionSlowdown = 0.4f; // Multiply speed by this during bumps (0.4 = 40% speed)
-    public float recoveryRate = 2.0f;     // How fast they regain speed after a bump
+    public float pushForce = 5.0f;
+    public float collisionSlowdown = 0.4f;
+    public float recoveryRate = 2.0f;
 
     private NavMeshAgent agent;
     private Rigidbody rb;
@@ -28,6 +34,8 @@ public class CrowdAgent : MonoBehaviour
 
     private float currentSpeedModifier = 1.0f;
     private float baseTargetSpeed;
+    private Vector3 currentMoveTarget;
+    private float myCheckInterval; // Per-agent unique interval
 
     public void InitializeBounds(Bounds bounds)
     {
@@ -40,10 +48,11 @@ public class CrowdAgent : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
 
-        // 1. DISCONNECT the agent from the transform position
-        // This stops the "fighting" that causes jitter
+        // Set a unique rhythm for this specific agent
+        myCheckInterval = Random.Range(minCheckInterval, maxCheckInterval);
+
         agent.updatePosition = false;
-        agent.updateRotation = true; // Keep this true so they face where they walk
+        agent.updateRotation = true;
 
         rb.isKinematic = false;
         rb.useGravity = true;
@@ -52,6 +61,8 @@ public class CrowdAgent : MonoBehaviour
 
         agent.avoidancePriority = Random.Range(0, 100);
         ApplyRandomPhysics();
+
+        StartCoroutine(PathDeviationRoutine());
     }
 
     void Update()
@@ -67,23 +78,44 @@ public class CrowdAgent : MonoBehaviour
         }
     }
 
+    IEnumerator PathDeviationRoutine()
+    {
+        while (true)
+        {
+            // Wait for THIS agent's specific interval
+            yield return new WaitForSeconds(myCheckInterval);
+
+            if (boundsSet && !isChoosingDestination && agent.hasPath)
+            {
+                if (Random.value < deviationProbability)
+                {
+                    Vector2 randomCircle = Random.insideUnitCircle * deviationRadius;
+                    Vector3 deviation = new Vector3(randomCircle.x, 0, randomCircle.y);
+
+                    NavMeshHit hit;
+                    if (NavMesh.SamplePosition(currentMoveTarget + deviation, out hit, deviationRadius * 1.5f, NavMesh.AllAreas))
+                    {
+                        agent.SetDestination(hit.position);
+                    }
+                }
+            }
+        }
+    }
+
     void FixedUpdate()
     {
-        // 2. MANUALLY move the Rigidbody toward the Agent's internal position
-        // This allows physics to "win" during a collision without jitter
         Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
 
         if (worldDeltaPosition.magnitude > agent.radius)
         {
-            // Smoothly pull the agent's internal ghost toward the physical body
             agent.nextPosition = transform.position + 0.9f * worldDeltaPosition;
         }
 
-        // Apply the velocity to the Rigidbody
         Vector3 velocity = worldDeltaPosition / Time.fixedDeltaTime;
-        velocity.y = rb.linearVelocity.y; // Preserve gravity
+        velocity.y = rb.linearVelocity.y;
         rb.linearVelocity = Vector3.ClampMagnitude(velocity, agent.speed);
     }
+
     void ApplyRandomPhysics()
     {
         baseTargetSpeed = Random.Range(minSpeed, maxSpeed);
@@ -97,9 +129,8 @@ public class CrowdAgent : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(minWaitTime, maxWaitTime));
 
         ApplyRandomPhysics();
-
-        Vector3 newPos = GetRandomPointInBounds();
-        agent.SetDestination(newPos);
+        currentMoveTarget = GetRandomPointInBounds();
+        agent.SetDestination(currentMoveTarget);
 
         isChoosingDestination = false;
     }
@@ -115,28 +146,19 @@ public class CrowdAgent : MonoBehaviour
         {
             return hit.position;
         }
-
         return transform.position;
     }
 
-    // This handles the "Mutual" interaction
     void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("Agent") || collision.gameObject.CompareTag("Player"))
         {
-            // Calculate direction from the other object to us
-            Vector3 pushDir = transform.position - collision.transform.position;
+            Vector3 pushDir = (transform.position - collision.transform.position).normalized;
             pushDir.y = 0;
-            pushDir.Normalize();
 
-            // Apply a "Stumble" speed penalty
             currentSpeedModifier = collisionSlowdown;
-
-            // Apply physical nudge to self
             rb.AddForce(pushDir * pushForce, ForceMode.Acceleration);
 
-            // Apply slight push to the other agent (if it has a Rigidbody)
-            // This creates the "Mutual Interaction" where both feel the bump
             if (collision.gameObject.TryGetComponent<Rigidbody>(out Rigidbody agentRb))
             {
                 agentRb.AddForce(-pushDir * (pushForce * 0.5f), ForceMode.Acceleration);
