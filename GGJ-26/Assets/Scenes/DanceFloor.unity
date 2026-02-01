@@ -867,7 +867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoundSpawner
   agentPrefab: {fileID: 6162291940168617682, guid: e8d2fa723e2b467439d8cd4b89c69a2f, type: 3}
-  agentCount: 3
+  agentCount: 18
   surface: {fileID: 1125246677}
   factionCount: 4
 --- !u!4 &1468681045
