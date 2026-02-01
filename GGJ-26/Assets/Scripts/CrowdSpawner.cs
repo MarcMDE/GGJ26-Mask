@@ -55,7 +55,10 @@ public class CrowdSpawner : MonoBehaviour
             // 5.0f range allows for height variance
             if (NavMesh.SamplePosition(randomPoint, out hit, 5.0f, NavMesh.AllAreas))
             {
-                GameObject newAgent = Instantiate(agentPrefab, hit.position, Quaternion.identity);
+                var pos = new Vector3(hit.position.x, hit.position.y + 2, hit.position.z);
+                
+                GameObject newAgent = Instantiate(agentPrefab, pos, Quaternion.identity);
+                newAgent.name = agentPrefab.name + spawned;
                 newAgent.transform.parent = this.transform;
 
                 // Hand the bounds to the agent
