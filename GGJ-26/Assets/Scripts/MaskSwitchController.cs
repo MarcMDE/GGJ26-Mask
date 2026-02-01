@@ -5,7 +5,7 @@ public class MaskSwitchController : InteractionController
 {
     ModelController factionController;
 
-    [SerializeField] private float attackCoolDown = 3f;
+    [SerializeField] private float switchCoolDown = 3f;
 
     bool isSwitchAvailable = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,7 +22,11 @@ public class MaskSwitchController : InteractionController
 
     public void TrySwitchMask()
     {
+        /*Debug.Log("switch input " + gameObject.name);
+
         if (!isSwitchAvailable) return;
+
+        Debug.Log("ready");
         isSwitchAvailable = false;
 
         var otherCharacter = GetClosestCharacter();
@@ -34,18 +38,52 @@ public class MaskSwitchController : InteractionController
         var otherFactionController = otherCharacter.GetComponent<ModelController>();
 
         var otherFaction = otherFactionController.GetFaction();
-
-        if(currentFaction == otherFaction) return;
+        Debug.Log("factions: "+ currentFaction + ", "+otherFaction);
+        if (currentFaction == otherFaction) return;
         
         factionController.SetFaction(otherFaction);
         otherFactionController.SetFaction(currentFaction);
 
-        StartCoroutine(SwitchCoolDownCoroutine());
+        StartCoroutine(SwitchCoolDownCoroutine());*/
+        Debug.Log("switch input " + gameObject.name);
+        if (isSwitchAvailable) StartCoroutine(SwitchMaskCR());
+    }
+
+    IEnumerator SwitchMaskCR()
+    {
+        Debug.Log("switch input " + gameObject.name);
+
+        Debug.Log("ready");
+        isSwitchAvailable = false;
+
+        var otherCharacter = GetClosestCharacter();
+
+        if (otherCharacter == null)
+        {
+            isSwitchAvailable = true;
+            yield break;
+        }
+        var currentFaction = factionController.GetFaction();
+
+        var otherFactionController = otherCharacter.GetComponent<ModelController>();
+
+        var otherFaction = otherFactionController.GetFaction();
+        Debug.Log("factions: " + currentFaction + ", " + otherFaction);
+        if (currentFaction == otherFaction)
+        {
+            isSwitchAvailable = true;
+            yield break;
+        }
+        factionController.SetFaction(otherFaction);
+        otherFactionController.SetFaction(currentFaction);
+
+        yield return new WaitForSeconds(switchCoolDown);
+        isSwitchAvailable = true;
     }
 
     IEnumerator SwitchCoolDownCoroutine()
     {
-        yield return new WaitForSeconds(attackCoolDown);
+        yield return new WaitForSeconds(switchCoolDown);
         isSwitchAvailable = true;
     }
 
