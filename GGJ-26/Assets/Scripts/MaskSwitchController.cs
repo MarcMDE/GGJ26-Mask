@@ -7,6 +7,8 @@ public class MaskSwitchController : InteractionController
     Animator animator;
 
     [SerializeField] private float switchCoolDown = 3f;
+    [SerializeField] private GameObject successParticles;
+    [SerializeField] private GameObject failureParticles;
 
     bool isSwitchAvailable = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,6 +51,11 @@ public class MaskSwitchController : InteractionController
         StartCoroutine(SwitchCoolDownCoroutine());*/
         Debug.Log("switch input " + gameObject.name);
         if (isSwitchAvailable) StartCoroutine(SwitchMaskCR());
+        else if (!animator.GetCurrentAnimatorStateInfo(0).IsName("SwitchMask"))
+        {
+            failureParticles.SetActive(false);
+            failureParticles.SetActive(true);
+        }
     }
 
     IEnumerator SwitchMaskCR()
@@ -90,7 +97,8 @@ public class MaskSwitchController : InteractionController
         }
         factionController.SetFaction(otherFaction);
         otherFactionController.SetFaction(currentFaction);
-
+        successParticles.SetActive(false);
+        successParticles.SetActive(true);
         yield return new WaitForSeconds(switchCoolDown);
         isSwitchAvailable = true;
     }

@@ -6,6 +6,8 @@ namespace Mask.Player
     public class PlayerAttackController : InteractionController
     {
         [SerializeField] private float attackCoolDown = 3f;
+        [SerializeField] private GameObject successParticles;
+        [SerializeField] private GameObject failureParticles;
 
         private Animator animator;
         bool isAttackAvailable;
@@ -22,13 +24,17 @@ namespace Mask.Player
 
         public void Attack()
         {
-            StartCoroutine(AttackCR());
+            if (isAttackAvailable)
+                StartCoroutine(AttackCR());
+            else if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            {
+                failureParticles.SetActive(false);
+                failureParticles.SetActive(true);
+            }
         }
 
         IEnumerator AttackCR()
         {
-            if (!isAttackAvailable) yield break;
-
             isAttackAvailable = false;
             animator.SetBool("AttackQueued", true);
 
@@ -66,7 +72,12 @@ namespace Mask.Player
             if (nearestCharacter != null)
             {
                 var die = GetComponent<DieController>();
-                if (!die.IsDead()) nearestCharacter.GetComponent<DieController>().Die();
+                if (!die.IsDead())
+                {
+                    nearestCharacter.GetComponent<DieController>().Die();
+                    successParticles.SetActive(false);
+                    successParticles.SetActive(true);
+                }
             }
         }
     }

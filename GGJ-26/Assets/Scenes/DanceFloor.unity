@@ -1821,7 +1821,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3605050846114124674, guid: 0d624879fa14f5049aca5a5021f9adab, type: 3}
       propertyPath: emotePeriod
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5540547069932898990, guid: 0d624879fa14f5049aca5a5021f9adab, type: 3}
       propertyPath: surface
