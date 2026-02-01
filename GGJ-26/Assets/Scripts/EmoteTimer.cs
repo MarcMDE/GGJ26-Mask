@@ -11,9 +11,14 @@ public class EmoteTimer : MonoBehaviour
     private void Start()
     {
         crowdSpawner = GetComponent<CrowdSpawner>();
-        StartCoroutine(AgentsEmote());
+        
     }
     
+    public void StartLoop()
+    {
+        StartCoroutine(AgentsEmote());
+    }
+
     IEnumerator AgentsEmote()
     {
        // var agents
