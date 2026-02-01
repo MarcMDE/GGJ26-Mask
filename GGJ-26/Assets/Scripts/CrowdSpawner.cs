@@ -11,6 +11,8 @@ public class CrowdSpawner : MonoBehaviour
     [SerializeField] private int agentCount = 50;
 
     [SerializeField] private NavMeshSurface surface;
+
+    [SerializeField] private int factionCount = 4;
     private Bounds spawnBounds;
 
     private List<CrowdAgent> agents = new List<CrowdAgent>();
@@ -55,7 +57,10 @@ public class CrowdSpawner : MonoBehaviour
             // 5.0f range allows for height variance
             if (NavMesh.SamplePosition(randomPoint, out hit, 5.0f, NavMesh.AllAreas))
             {
-                GameObject newAgent = Instantiate(agentPrefab, hit.position, Quaternion.identity);
+                var pos = new Vector3(hit.position.x, hit.position.y + 2, hit.position.z);
+                
+                GameObject newAgent = Instantiate(agentPrefab, pos, Quaternion.identity);
+                newAgent.name = agentPrefab.name + spawned;
                 newAgent.transform.parent = this.transform;
 
                 // Hand the bounds to the agent
@@ -63,7 +68,11 @@ public class CrowdSpawner : MonoBehaviour
                 {
                     newAgent.GetComponent<DieController>().SetDieDelegate(RemoveAgent);
 
+                    int faction = Random.Range(0, factionCount);
+
+                    newAgent.GetComponent<ModelController>().SetFaction(faction);
                     crowdScript.InitializeBounds(spawnBounds);
+
                     agents.Add(crowdScript);
                 }
                 
@@ -82,5 +91,10 @@ public class CrowdSpawner : MonoBehaviour
     public List<CrowdAgent> GetAgents()
     {
         return agents;
+    }
+
+    public int GetFactionCount()
+    {
+        return factionCount;
     }
 }
