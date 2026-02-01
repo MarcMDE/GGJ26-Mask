@@ -7,6 +7,9 @@ public class DieController : MonoBehaviour
     private Animator animator;
 
     private Action<GameObject> onDeath;
+
+    private bool dead;
+
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -14,12 +17,18 @@ public class DieController : MonoBehaviour
 
     public void Die()
     {
+        dead = true;
         animator.SetTrigger("DieTrigger");
         StartCoroutine(DieCoroutine());
     }
 
     public void SetDieDelegate(Action<GameObject> dieFunc) {
         onDeath = dieFunc;
+    }
+
+    public bool IsDead()
+    {
+        return dead;
     }
 
 

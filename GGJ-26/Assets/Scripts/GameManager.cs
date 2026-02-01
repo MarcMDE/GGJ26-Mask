@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] PlayerSpawnHandler playerSpawnHandler;
     [SerializeField] PlayersTracker playersTracker;
     [SerializeField] CrowdSpawner crowdSpawner;
+    [SerializeField] TextMeshProUGUI winText;
     
     void Start()
     {
@@ -58,6 +61,18 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         // TODO: 3, 2, 1 Go! countdown
         yield return new WaitUntil(() => playersTracker.NumPlayersAlive <= 1 || playersTracker.NumPlayersConnected <= 1);
+
+        var player = playersTracker.GetLastPlayerAlive();
+
+        if (player != null)
+        {
+            winText.text = "WINNER!";
+
+            player.transform.localScale = new Vector3(5, 5, 5);
+        }
+        yield return new WaitForSeconds(8);
+
+        SceneManager.LoadScene("MenuScene");
     }
 
     IEnumerator GameOverCoroutine()

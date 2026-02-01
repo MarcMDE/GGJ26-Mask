@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,6 +20,7 @@ public class PlayersTracker : MonoBehaviour
     {
         if (NumPlayersAlive <= 1)
         {
+            return (FindAnyObjectByType(typeof(PlayerInput)) as PlayerInput ).gameObject;
             // TODO: Find last alive
         }
         

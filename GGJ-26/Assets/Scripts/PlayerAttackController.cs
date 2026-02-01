@@ -63,7 +63,8 @@ namespace Mask.Player
 
             if (nearestCharacter != null)
             {
-                nearestCharacter.GetComponent<DieController>().Die();
+                var die = GetComponent<DieController>();
+                if (!die.IsDead()) nearestCharacter.GetComponent<DieController>().Die();
             }
         }
     }
