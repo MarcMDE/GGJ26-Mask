@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -11,8 +12,7 @@ public class PlayerSpawnHandler : MonoBehaviour
     [SerializeField] private UnityEvent<PlayerInput> OnPlayerSpawned;
     List<CrowdAgent> crowdAgents;
     CrowdSpawner crowdSpawner;
-    List<GameObject> usedCrowdAgents;
-    private int playerIndex;
+    private int spawnedPlayersCounter;
     int nCrowdAgents;
 
     void OnEnable()
@@ -20,38 +20,25 @@ public class PlayerSpawnHandler : MonoBehaviour
         crowdSpawner = FindAnyObjectByType<CrowdSpawner>();
         crowdAgents = crowdSpawner.GetAgents();
         nCrowdAgents = crowdAgents.Count;
-        usedCrowdAgents = new List<GameObject>();
-        playerIndex = 0;
-    }
-
-    void OnDisable()
-    {
-        OnSpawnPlayersEnd();
-        usedCrowdAgents.Clear();
+        spawnedPlayersCounter = 0;
     }
 
     public void OnPlayerJoined(PlayerInput playerInput)
     {
-        if (playerIndex >= nCrowdAgents)
+        if (spawnedPlayersCounter >= nCrowdAgents)
         {
             Debug.LogError("No crowd agents available for player spawn!");
             return;
         }
 
-        var agent = crowdAgents[playerIndex];
+        var agent = crowdAgents.First();
+        spawnedPlayersCounter++;
         playerInput.transform.position = agent.transform.position;
         playerInput.transform.rotation = agent.transform.rotation;
-        playerIndex++;
-        usedCrowdAgents.Add(agent.gameObject);
-        agent.gameObject.SetActive(false);
+        playerInput.GetComponent<ModelController>().SetFaction(
+            agent.GetComponent<ModelController>().GetFaction()
+        );
+        crowdSpawner.RemoveAgent(agent.gameObject);
         OnPlayerSpawned?.Invoke(playerInput);
-    }
-
-    public void OnSpawnPlayersEnd()
-    {
-        foreach (var agent in usedCrowdAgents)
-        {
-            crowdSpawner.RemoveAgent(agent);
-        }
     }
 }
