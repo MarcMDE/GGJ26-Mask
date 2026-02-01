@@ -1,11 +1,15 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayersTracker : MonoBehaviour
 {
     private List<PlayerInput> players = new List<PlayerInput>();
+    public event UnityAction OnNumPlayersConnectedChanged;
+    public event UnityAction OnNumPlayersAliveChanged;
 
     public int NumPlayersAlive { get; private set; }
     public int NumPlayersConnected { get; private set; }
@@ -18,19 +22,16 @@ public class PlayersTracker : MonoBehaviour
 
     public GameObject GetLastPlayerAlive()
     {
-        if (NumPlayersAlive <= 1)
-        {
-            return (FindAnyObjectByType(typeof(PlayerInput)) as PlayerInput ).gameObject;
-            // TODO: Find last alive
-        }
-        
-        return null;
+            return players
+            .Select(p => p.gameObject)
+            .FirstOrDefault(p => !p.GetComponent<Animator>().GetBool("isDead"));
     }
 
     private void OnPlayerKilled(GameObject player)
     {
         NumPlayersAlive--;
         Destroy(player);
+        OnNumPlayersAliveChanged?.Invoke();
     }
 
     public void OnPlayerJoined(PlayerInput player)
@@ -40,12 +41,14 @@ public class PlayersTracker : MonoBehaviour
         
         players.Add(player);
         player.GetComponent<DieController>().SetDieDelegate(OnPlayerKilled);
+        OnNumPlayersConnectedChanged?.Invoke();
     }
 
     public void OnPlayerDisconnected(PlayerInput player)
     {
         Debug.Log($"Player {player.name} disconected.");
         NumPlayersConnected--;
+        OnNumPlayersConnectedChanged?.Invoke();
         //players.Remove(player);
     }
 }

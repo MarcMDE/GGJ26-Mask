@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3857365800699499476
+--- !u!1 &2574651993586649994
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8836047335683066767}
-  - component: {fileID: 8142069411069045893}
+  - component: {fileID: 8777530761532181589}
+  - component: {fileID: 2158043407506917028}
+  - component: {fileID: 7140076344400338824}
+  - component: {fileID: 835087972012217382}
   m_Layer: 0
   m_Name: CrowdSpawner
   m_TagString: Untagged
@@ -17,13 +19,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8836047335683066767
+--- !u!4 &8777530761532181589
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3857365800699499476}
+  m_GameObject: {fileID: 2574651993586649994}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,18 +34,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8142069411069045893
+--- !u!114 &2158043407506917028
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3857365800699499476}
+  m_GameObject: {fileID: 2574651993586649994}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a297940fc5d2f242b2ca97845cb42ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoundSpawner
   agentPrefab: {fileID: 6162291940168617682, guid: e8d2fa723e2b467439d8cd4b89c69a2f, type: 3}
-  agentCount: 25
+  agentCount: 26
   surface: {fileID: 0}
+  factionCount: 4
+--- !u!114 &7140076344400338824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2574651993586649994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0681e647d6ad7ab4aa72ebe2e76273ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  emotePeriod: 5
+--- !u!114 &835087972012217382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2574651993586649994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4624170cc6bc6949a6ca82aae2cbc96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  groupPeriodMin: 12
+  groupPeriodMax: 16
+  surface: {fileID: 0}
+  minEventDuration: 13
+  maxEventDuration: 14

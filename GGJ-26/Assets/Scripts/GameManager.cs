@@ -5,20 +5,59 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+public enum GameStates
+{
+    Loading,
+    SpawningCrowd,
+    WaitingForPlayers,
+    FindYourself,
+    Playing,
+    GameOver,
+    Pause
+}
+
 public class GameManager : MonoBehaviour
 {
     [SerializeField] PlayerInputManager playerInputManager;
     [SerializeField] PlayerSpawnHandler playerSpawnHandler;
     [SerializeField] PlayersTracker playersTracker;
     [SerializeField] CrowdSpawner crowdSpawner;
-    [SerializeField] TextMeshProUGUI winText;
-    
+    [SerializeField] TextMeshProUGUI uiTitleText;
+    [SerializeField] TextMeshProUGUI uiDescText;
+    [SerializeField] TextMeshProUGUI uiDesc2Text;
+
+    public static GameStates CurrentGameState { get; private set; }
+
+    void Awake()
+    {
+        CurrentGameState = GameStates.Loading;
+    }
     void Start()
     {
+        
         playerInputManager.DisableJoining();
         playerSpawnHandler.enabled = false;
 
+        uiDescText.text = "";
+        uiDesc2Text.text = "";
+        uiTitleText.text = "Loading...";
+
         StartCoroutine(GameFlowCoroutine());
+    }
+
+    private void NumPlayersConnectedChanged()
+    {
+        uiDesc2Text.text = $"There are {playersTracker.NumPlayersConnected} players connected.";
+    }
+
+    private void NumPlayersAliveChanged()
+    {   if (playersTracker.NumPlayersAlive <= 1)
+        {
+            uiDesc2Text.text = $"Last player standing!";
+            CurrentGameState = GameStates.GameOver;
+        }
+        else
+            uiDesc2Text.text = $"There are {playersTracker.NumPlayersAlive} players alive.";
     }
 
     IEnumerator GameFlowCoroutine()
@@ -28,59 +67,73 @@ public class GameManager : MonoBehaviour
         yield return WaitForPlayersCoroutine();
         yield return PlayGameCoroutine();
         yield return GameOverCoroutine();
-        //yield return new WaitUntil(() => CheckGameOver());
     }
 
     IEnumerator StartAgentsSpawningCoroutine()
     {
+        CurrentGameState = GameStates.SpawningCrowd;
         Debug.Log("Spawning crowd agents...");
-        // TODO: Crowd spawner spawn
+        crowdSpawner.SpawnCrowd();
         // TODO: Wait for agents to move into the scene
-        yield return null;
+        yield return new WaitForSeconds(1f);
     }
 
     IEnumerator WaitForPlayersCoroutine()
     {
-        Debug.Log("Waiting for players to join...");
+        CurrentGameState = GameStates.WaitingForPlayers;
+        uiTitleText.text = "Press ANY buttton to JOIN THE GAME!";
+        uiDescText.text = "At least 2 players are required to start";
         // TODO: Show UI to ask for players
+        playersTracker.OnNumPlayersConnectedChanged += NumPlayersConnectedChanged;
         playerSpawnHandler.enabled = true;
         playerInputManager.EnableJoining();
         yield return new WaitUntil(() => playersTracker.NumPlayersConnected > 1);
         // TODO: Show UI indicating that joining is about to end
-        Debug.Log("There are enough players, starting game in 10 seconds...");
-        yield return new WaitForSeconds(10f); // Wait additional time for more players to join
+        uiDescText.text = "Game will start in 10 seconds!";
+        yield return new WaitForSeconds(1.5f);
+
+        for (int i=9; i>0; i--)
+        {
+            uiDescText.text = $"{i}";
+            yield return new WaitForSeconds(1f);
+        }
+
         playerInputManager.DisableJoining();
         playerSpawnHandler.enabled = false;
-        // TODO: Disable player joining UI
+        playersTracker.OnNumPlayersConnectedChanged -= NumPlayersConnectedChanged;
+        uiDesc2Text.text = "";
+        uiDescText.text = "";
     }
 
     IEnumerator PlayGameCoroutine()
     {
-        Debug.Log("Play game!");
-        // TODO: Show controls + explain game rules
+        CurrentGameState = GameStates.FindYourself;
+        uiTitleText.text = "START!";
+        yield return new WaitForSeconds(1f);
+        uiTitleText.text = "Find yourself!";
         yield return new WaitForSeconds(3f);
-        // TODO: 3, 2, 1 Go! countdown
-        yield return new WaitUntil(() => playersTracker.NumPlayersAlive <= 1 || playersTracker.NumPlayersConnected <= 1);
-
-        var player = playersTracker.GetLastPlayerAlive();
-
-        if (player != null)
-        {
-            winText.text = "WINNER!";
-
-            player.transform.localScale = new Vector3(5, 5, 5);
-        }
-        yield return new WaitForSeconds(8);
-
-        SceneManager.LoadScene("MenuScene");
+        uiTitleText.text = "UNMASK the other players TO WIN!";
+        CurrentGameState = GameStates.Playing;
+        playersTracker.OnNumPlayersAliveChanged += NumPlayersAliveChanged;
+        yield return new WaitForSeconds(3f);
+        uiTitleText.text = "";
+        //yield return new WaitUntil(() => playersTracker.NumPlayersAlive <= 1 || playersTracker.NumPlayersConnected <= 1);
+        yield return new WaitUntil(() => CurrentGameState == GameStates.GameOver);
+        playersTracker.OnNumPlayersAliveChanged -= NumPlayersAliveChanged;
     }
 
     IEnumerator GameOverCoroutine()
     {
-        Debug.Log("Game Over!");
-        // Find winner (if any)
-        // TODO: Show game over UI
-        yield return new WaitForSeconds(5f);
-        // TODO: Reset game state
+        var player = playersTracker.GetLastPlayerAlive();
+
+        if (player != null)
+        {
+            uiTitleText.text = "WINNER!";
+            player.transform.localScale = new Vector3(5, 5, 5);
+        }
+
+        yield return new WaitForSeconds(8);
+
+        SceneManager.LoadScene("MenuScene");
     }
 }

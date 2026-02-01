@@ -20,7 +20,7 @@ public class CrowdSpawner : MonoBehaviour
     void Start()
     {
         CalculateBounds();
-        SpawnCrowd();
+        //SpawnCrowd();
     }
 
     void CalculateBounds()
@@ -37,7 +37,7 @@ public class CrowdSpawner : MonoBehaviour
         }
     }
 
-    void SpawnCrowd()
+    public void SpawnCrowd()
     {
         int spawned = 0;
         int attempts = 0;
