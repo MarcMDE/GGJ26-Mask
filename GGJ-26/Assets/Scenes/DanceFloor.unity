@@ -1813,7 +1813,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5c1337ecf336fb646909a3b95c4c8684, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.434104
+      value: -12.17
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5c1337ecf336fb646909a3b95c4c8684, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1821,7 +1821,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5c1337ecf336fb646909a3b95c4c8684, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.594
+      value: 3.44
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5c1337ecf336fb646909a3b95c4c8684, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2364,6 +2364,30 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7181390151299559772, guid: 461d5d4d7a6aec945a294349a3addf8d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7181390151299559772, guid: 461d5d4d7a6aec945a294349a3addf8d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7181390151299559772, guid: 461d5d4d7a6aec945a294349a3addf8d, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7181390151299559772, guid: 461d5d4d7a6aec945a294349a3addf8d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7181390151299559772, guid: 461d5d4d7a6aec945a294349a3addf8d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 7181390151299559772, guid: 461d5d4d7a6aec945a294349a3addf8d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1200
+      objectReference: {fileID: 0}
     - target: {fileID: 8004942213237692787, guid: 461d5d4d7a6aec945a294349a3addf8d, type: 3}
       propertyPath: m_Name
       value: GameCanvas
@@ -2393,5 +2417,4 @@ SceneRoots:
   - {fileID: 2103765134}
   - {fileID: 1268871076}
   - {fileID: 1179191905}
-  - {fileID: 83794060}
   - {fileID: 1654487577}
