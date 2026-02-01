@@ -37,7 +37,7 @@ public class CrowdSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnCrowd()
+    public IEnumerator SpawnCrowd()
     {
         int spawned = 0;
         int attempts = 0;
@@ -79,6 +79,8 @@ public class CrowdSpawner : MonoBehaviour
                 }
                 
                 spawned++;
+
+                yield return null; // Spread spawning over multiple frames
             }
         }
     }

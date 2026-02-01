@@ -80,9 +80,8 @@ public class GameManager : MonoBehaviour
     {
         CurrentGameState = GameStates.SpawningCrowd;
         Debug.Log("Spawning crowd agents...");
-        crowdSpawner.SpawnCrowd();
+        yield return crowdSpawner.SpawnCrowd();
         // TODO: Sync wait for agents to be spawned
-        yield return new WaitForSeconds(loadingTime);
         uiControlsImage.gameObject.SetActive(false);
 
         music.Play();
