@@ -34,6 +34,8 @@ public class MaskSwitchController : InteractionController
         var otherFactionController = otherCharacter.GetComponent<ModelController>();
 
         var otherFaction = otherFactionController.GetFaction();
+
+        if(currentFaction == otherFaction) return;
         
         factionController.SetFaction(otherFaction);
         otherFactionController.SetFaction(currentFaction);
