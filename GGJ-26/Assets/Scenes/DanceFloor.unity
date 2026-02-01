@@ -2069,6 +2069,10 @@ PrefabInstance:
       propertyPath: uiControlsImage
       value: 
       objectReference: {fileID: 363742021}
+    - target: {fileID: 1044454749988320330, guid: 0d624879fa14f5049aca5a5021f9adab, type: 3}
+      propertyPath: waitForPlayersSeconds
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1624354642124884873, guid: 0d624879fa14f5049aca5a5021f9adab, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -2221,6 +2225,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4201583984274126939, guid: 461d5d4d7a6aec945a294349a3addf8d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b2e26e826cd43bd438130bd517f1d0af, type: 3}
     - target: {fileID: 4630388724585439111, guid: 461d5d4d7a6aec945a294349a3addf8d, type: 3}
       propertyPath: m_IsActive
       value: 0
