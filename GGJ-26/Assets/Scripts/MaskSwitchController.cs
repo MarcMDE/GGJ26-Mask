@@ -94,12 +94,4 @@ public class MaskSwitchController : InteractionController
         yield return new WaitForSeconds(switchCoolDown);
         isSwitchAvailable = true;
     }
-
-    IEnumerator SwitchCoolDownCoroutine()
-    {
-        yield return new WaitForSeconds(switchCoolDown);
-        isSwitchAvailable = true;
-    }
-
-
 }
