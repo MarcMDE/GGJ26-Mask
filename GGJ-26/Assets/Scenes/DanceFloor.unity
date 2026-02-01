@@ -1006,8 +1006,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4624170cc6bc6949a6ca82aae2cbc96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  groupPeriodMin: 5
-  groupPeriodMax: 20
+  groupPeriodMin: 12
+  groupPeriodMax: 16
+  clusterCount: 4
+  surface: {fileID: 1125246677}
+  minEventDuration: 10
+  maxEventDuration: 14
 --- !u!114 &1468681047
 MonoBehaviour:
   m_ObjectHideFlags: 0

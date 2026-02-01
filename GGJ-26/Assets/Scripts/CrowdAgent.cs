@@ -40,6 +40,8 @@ public class CrowdAgent : MonoBehaviour
     [Header("Animator")]
     private Animator animator;
 
+    private CircleConstraint circleConstraint;  
+
     public void InitializeBounds(Bounds bounds)
     {
         wanderBounds = bounds;
@@ -94,7 +96,7 @@ public class CrowdAgent : MonoBehaviour
             // Wait for THIS agent's specific interval
             yield return new WaitForSeconds(myCheckInterval);
 
-            if (boundsSet && !isChoosingDestination && agent.hasPath)
+            if (boundsSet && !isChoosingDestination && agent.hasPath && circleConstraint == null)
             {
                 if (Random.value < deviationProbability)
                 {
@@ -138,17 +140,26 @@ public class CrowdAgent : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(minWaitTime, maxWaitTime));
 
         ApplyRandomPhysics();
-        currentMoveTarget = GetRandomPointInBounds();
+        currentMoveTarget = GetRandomPoint();
         agent.SetDestination(currentMoveTarget);
 
         isChoosingDestination = false;
     }
 
-    Vector3 GetRandomPointInBounds()
+    Vector3 GetRandomPoint()
     {
+        Vector3 randomPoint;
+        if (circleConstraint!= null)
+        {
+            var unit = Random.insideUnitCircle * circleConstraint.radius;
+            randomPoint = circleConstraint.center + new Vector3(unit.x, wanderBounds.center.y, unit.y);
+            return randomPoint;
+        }
+        
+
         float rx = Random.Range(wanderBounds.min.x, wanderBounds.max.x);
         float rz = Random.Range(wanderBounds.min.z, wanderBounds.max.z);
-        Vector3 randomPoint = new Vector3(rx, wanderBounds.center.y, rz);
+        randomPoint = new Vector3(rx, wanderBounds.center.y, rz);
 
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomPoint, out hit, 10.0f, NavMesh.AllAreas))
@@ -162,6 +173,19 @@ public class CrowdAgent : MonoBehaviour
     {
         agent.isStopped = true;
         this.enabled = false;
+    }
+
+    public void SetCircleConstraint(Vector3 center, float radius)
+    {
+        circleConstraint = new CircleConstraint(center, radius);
+        agent.SetDestination(transform.position);
+    }
+
+
+
+    public void ResetCircleConstraint()
+    {
+        circleConstraint = null;
     }
 
     void OnCollisionStay(Collision collision)
@@ -179,5 +203,18 @@ public class CrowdAgent : MonoBehaviour
                 agentRb.AddForce(-pushDir * (pushForce * 0.5f), ForceMode.Acceleration);
             }
         }
+    }
+
+    
+}
+public class CircleConstraint
+{
+    public float radius;
+    public Vector3 center;
+
+    public CircleConstraint(Vector3 center,float radius)
+    {
+        this.radius = radius;
+        this.center = center;
     }
 }
