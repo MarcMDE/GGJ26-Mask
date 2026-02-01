@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InteractionController : MonoBehaviour
 {
-    [SerializeField] private float attackConeDotThreshold = 0.6f;
+    [SerializeField] private float attackConeDotThreshold = 0.5f;
     public GameObject GetClosestCharacter()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, 1.0f, LayerMask.GetMask("Character"));
@@ -16,11 +16,11 @@ public class InteractionController : MonoBehaviour
 
             Vector3 directionToTarget = (hit.transform.position - transform.position).normalized;
 
-            // 3. Dot Product entre mi frente (Forward) y la dirección al objeto
-            // 1 = exactamente enfrente, 0 = perpendicular, -1 = exactamente detrás
+            // 3. Dot Product entre mi frente (Forward) y la direcciï¿½n al objeto
+            // 1 = exactamente enfrente, 0 = perpendicular, -1 = exactamente detrï¿½s
             float dot = Vector3.Dot(transform.forward, directionToTarget);
 
-            // 4. Seleccionar el que tenga el valor más cercano a 1
+            // 4. Seleccionar el que tenga el valor mï¿½s cercano a 1
             if (dot > attackConeDotThreshold && dot > nearestValue)
             {
                 nearestValue = dot;

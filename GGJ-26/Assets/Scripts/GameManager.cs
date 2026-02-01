@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -25,16 +26,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI uiTitleText;
     [SerializeField] TextMeshProUGUI uiDescText;
     [SerializeField] TextMeshProUGUI uiDesc2Text;
+    [SerializeField] UnityEngine.UI.Image uiControlsImage;
 
     public static GameStates CurrentGameState { get; private set; }
 
-    void Awake()
-    {
-        CurrentGameState = GameStates.Loading;
-    }
     void Start()
     {
-        
+        CurrentGameState = GameStates.Loading;
+        uiControlsImage.gameObject.SetActive(true);
         playerInputManager.DisableJoining();
         playerSpawnHandler.enabled = false;
 
@@ -74,8 +73,9 @@ public class GameManager : MonoBehaviour
         CurrentGameState = GameStates.SpawningCrowd;
         Debug.Log("Spawning crowd agents...");
         crowdSpawner.SpawnCrowd();
-        // TODO: Wait for agents to move into the scene
-        yield return new WaitForSeconds(1f);
+        // TODO: Sync wait for agents to be spawned
+        yield return new WaitForSeconds(3f);
+        uiControlsImage.gameObject.SetActive(false);
     }
 
     IEnumerator WaitForPlayersCoroutine()
