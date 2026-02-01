@@ -23,7 +23,6 @@ namespace Mask.Player
         public void Attack()
         {
             StartCoroutine(AttackCR());
-            // TODO: Logica atac
         }
 
         IEnumerator AttackCR()
