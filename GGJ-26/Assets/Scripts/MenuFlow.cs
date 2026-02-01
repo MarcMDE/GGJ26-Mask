@@ -1,10 +1,10 @@
-using UnityEditor;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MenuFlow : MonoBehaviour
 {
-    [SerializeField] private SceneAsset gameScene;
+    [SerializeField] private string gameScene;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,7 +20,7 @@ public class MenuFlow : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene(gameScene.name);
+        SceneManager.LoadScene(gameScene);
     }
 
     public void Exit()

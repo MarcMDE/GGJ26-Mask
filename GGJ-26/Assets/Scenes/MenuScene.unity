@@ -636,7 +636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 533706237065f444f959c7211ec660f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  gameScene: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+  gameScene: DanceFloor
 --- !u!4 &1070895261
 Transform:
   m_ObjectHideFlags: 0
