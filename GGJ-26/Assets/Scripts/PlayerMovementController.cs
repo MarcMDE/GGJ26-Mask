@@ -51,7 +51,8 @@ namespace Mask.Player
         {
 
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") ||
-                animator.GetCurrentAnimatorStateInfo(0).IsName("Emote")
+                animator.GetCurrentAnimatorStateInfo(0).IsName("SwitchMask") ||
+                animator.GetCurrentAnimatorStateInfo(0).IsName("isDead")
             ) return;
 
             animator.SetBool("isWalking", inputDirection.magnitude > 0.05f);

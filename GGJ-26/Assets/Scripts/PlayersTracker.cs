@@ -24,13 +24,13 @@ public class PlayersTracker : MonoBehaviour
     {
             return players
             .Select(p => p.gameObject)
-            .FirstOrDefault(p => !p.GetComponentInChildren<Animator>().GetBool("isDead"));
+            .FirstOrDefault(p => p.GetComponentInChildren<Animator>() != null && !p.GetComponentInChildren<Animator>().GetBool("isDead"));
     }
 
     private void OnPlayerKilled(GameObject player)
     {
         NumPlayersAlive--;
-        Destroy(player);
+        player.gameObject.SetActive(false);
         OnNumPlayersAliveChanged?.Invoke();
     }
 

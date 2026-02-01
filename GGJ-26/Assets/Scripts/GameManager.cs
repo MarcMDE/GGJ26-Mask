@@ -23,6 +23,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] PlayerSpawnHandler playerSpawnHandler;
     [SerializeField] PlayersTracker playersTracker;
     [SerializeField] CrowdSpawner crowdSpawner;
+
+    [SerializeField] EmoteTimer emoteTimer;
+    [SerializeField] AudioSource music;
+
     [SerializeField] TextMeshProUGUI uiTitleText;
     [SerializeField] TextMeshProUGUI uiDescText;
     [SerializeField] TextMeshProUGUI uiDesc2Text;
@@ -50,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     private void NumPlayersConnectedChanged()
     {
-        uiDesc2Text.text = $"There are {playersTracker.NumPlayersConnected} players connected.";
+        uiDesc2Text.text = $"There are {playersTracker.NumPlayersConnected} players connected";
     }
 
     private void NumPlayersAliveChanged()
@@ -60,7 +64,7 @@ public class GameManager : MonoBehaviour
             CurrentGameState = GameStates.GameOver;
         }
         else
-            uiDesc2Text.text = $"There are {playersTracker.NumPlayersAlive} players alive.";
+            uiDesc2Text.text = $"{playersTracker.NumPlayersAlive} players alive";
     }
 
     IEnumerator GameFlowCoroutine()
@@ -80,6 +84,8 @@ public class GameManager : MonoBehaviour
         // TODO: Sync wait for agents to be spawned
         yield return new WaitForSeconds(loadingTime);
         uiControlsImage.gameObject.SetActive(false);
+
+        music.Play();
     }
 
     IEnumerator WaitForPlayersCoroutine()
@@ -93,6 +99,9 @@ public class GameManager : MonoBehaviour
         playerInputManager.EnableJoining();
         yield return new WaitUntil(() => playersTracker.NumPlayersConnected > 1);
         // TODO: Show UI indicating that joining is about to end
+
+        music.Stop();
+
         uiDescText.text = $"Game will start in {waitForPlayersSeconds} seconds!";
         yield return new WaitForSeconds(1.5f);
 
@@ -121,6 +130,11 @@ public class GameManager : MonoBehaviour
         playersTracker.OnNumPlayersAliveChanged += NumPlayersAliveChanged;
         yield return new WaitForSeconds(3f);
         uiTitleText.text = "";
+
+        emoteTimer.StartLoop();
+        music.Play();
+        
+
         //yield return new WaitUntil(() => playersTracker.NumPlayersAlive <= 1 || playersTracker.NumPlayersConnected <= 1);
         yield return new WaitUntil(() => CurrentGameState == GameStates.GameOver);
         playersTracker.OnNumPlayersAliveChanged -= NumPlayersAliveChanged;
