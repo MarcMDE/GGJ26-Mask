@@ -136,6 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9620819578e965b40b2cb6d7c7fc140b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DieController
+  maskModel: {fileID: 7788567429553309363}
+  characterModel: {fileID: 7804696487637947353}
 --- !u!114 &3204823847281858352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,5 +359,10 @@ Transform:
 --- !u!1 &7788567429553309363 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6791246638269638471, guid: abce840864ffb1f46971141eb5855eac, type: 3}
+  m_PrefabInstance: {fileID: 3614655582085276148}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7804696487637947353 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6802137496344162861, guid: abce840864ffb1f46971141eb5855eac, type: 3}
   m_PrefabInstance: {fileID: 3614655582085276148}
   m_PrefabAsset: {fileID: 0}

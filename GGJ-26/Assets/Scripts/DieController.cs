@@ -5,6 +5,8 @@ using UnityEngine;
 public class DieController : MonoBehaviour
 {
     private Animator animator;
+    [SerializeField] GameObject maskModel;
+    [SerializeField] GameObject characterModel;
 
     private Action<GameObject> onDeath;
 
@@ -35,9 +37,12 @@ public class DieController : MonoBehaviour
     private IEnumerator DieCoroutine()
     {
         yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName("Die"));
+        maskModel.SetActive(false);
         animator.SetBool("isDead", true);
+
         yield return new WaitUntil(() => !animator.GetCurrentAnimatorStateInfo(0).IsName("Die"));
 
-       onDeath?.Invoke(gameObject);
+        characterModel.transform.parent = null;
+        onDeath?.Invoke(gameObject);
     }
 }

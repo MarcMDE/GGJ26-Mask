@@ -28,6 +28,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI uiDesc2Text;
     [SerializeField] UnityEngine.UI.Image uiControlsImage;
 
+    [Header("Flow settings")]
+    [SerializeField] private int waitForPlayersSeconds = 3;
+    [SerializeField] private float loadingTime = 1f;
+ 
     public static GameStates CurrentGameState { get; private set; }
 
     void Start()
@@ -74,7 +78,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Spawning crowd agents...");
         crowdSpawner.SpawnCrowd();
         // TODO: Sync wait for agents to be spawned
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(loadingTime);
         uiControlsImage.gameObject.SetActive(false);
     }
 
@@ -89,10 +93,10 @@ public class GameManager : MonoBehaviour
         playerInputManager.EnableJoining();
         yield return new WaitUntil(() => playersTracker.NumPlayersConnected > 1);
         // TODO: Show UI indicating that joining is about to end
-        uiDescText.text = "Game will start in 10 seconds!";
+        uiDescText.text = $"Game will start in {waitForPlayersSeconds} seconds!";
         yield return new WaitForSeconds(1.5f);
 
-        for (int i=9; i>0; i--)
+        for (int i=(int)waitForPlayersSeconds-1; i>0; i--)
         {
             uiDescText.text = $"{i}";
             yield return new WaitForSeconds(1f);
