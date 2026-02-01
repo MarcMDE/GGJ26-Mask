@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a297940fc5d2f242b2ca97845cb42ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoundSpawner
-  agentPrefab: {fileID: 2984136992183345480, guid: 358f79a03d6b51a429248c659647ef76, type: 3}
-  agentCount: 100
+  agentPrefab: {fileID: 6162291940168617682, guid: e8d2fa723e2b467439d8cd4b89c69a2f, type: 3}
+  agentCount: 25
   surface: {fileID: 0}
