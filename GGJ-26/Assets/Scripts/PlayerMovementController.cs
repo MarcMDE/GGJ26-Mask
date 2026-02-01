@@ -44,8 +44,7 @@ namespace Mask.Player
 
         public void SetMoveInput(Vector2 i)
         {
-            Vector3 heading = new Vector3(i.x, 0, i.y);
-            inputDirection = heading.normalized;
+            inputDirection = new Vector3(i.x, 0, i.y);
         }
 
         void Move()
