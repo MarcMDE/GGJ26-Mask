@@ -12,7 +12,7 @@ namespace Mask.Player
 
         void Awake()
         {
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
         }
 
         void Start()
@@ -60,7 +60,7 @@ namespace Mask.Player
         private void TryToKillCharacter()
         {
             if (GameManager.CurrentGameState != GameStates.Playing) return;
-            
+
             var nearestCharacter = GetClosestCharacter();
 
             if (nearestCharacter != null)

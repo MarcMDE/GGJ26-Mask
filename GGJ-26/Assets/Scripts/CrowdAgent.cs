@@ -54,7 +54,7 @@ public class CrowdAgent : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
 
         // Set a unique rhythm for this specific agent
         myCheckInterval = Random.Range(minCheckInterval, maxCheckInterval);
@@ -84,7 +84,7 @@ public class CrowdAgent : MonoBehaviour
 
         currentSpeedModifier = Mathf.MoveTowards(currentSpeedModifier, 1.0f, Time.deltaTime * recoveryRate);
         agent.speed = baseTargetSpeed * currentSpeedModifier;
-
+        animator.SetBool("isWalking", agent.hasPath);
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             if (!isChoosingDestination) StartCoroutine(ChooseNewDestination());

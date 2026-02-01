@@ -24,7 +24,7 @@ public class PlayersTracker : MonoBehaviour
     {
             return players
             .Select(p => p.gameObject)
-            .FirstOrDefault(p => !p.GetComponent<Animator>().GetBool("isDead"));
+            .FirstOrDefault(p => !p.GetComponentInChildren<Animator>().GetBool("isDead"));
     }
 
     private void OnPlayerKilled(GameObject player)
