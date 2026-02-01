@@ -42,6 +42,8 @@ public class CrowdSpawner : MonoBehaviour
         int spawned = 0;
         int attempts = 0;
 
+        int offset = Random.Range(0, factionCount);
+
         while (spawned < agentCount && attempts < 1000)
         {
             attempts++;
@@ -68,7 +70,7 @@ public class CrowdSpawner : MonoBehaviour
                 {
                     newAgent.GetComponent<DieController>().SetDieDelegate(RemoveAgent);
 
-                    int faction = Random.Range(0, factionCount);
+                    int faction = (spawned + offset) % factionCount;
 
                     newAgent.GetComponent<ModelController>().SetFaction(faction);
                     crowdScript.InitializeBounds(spawnBounds);
