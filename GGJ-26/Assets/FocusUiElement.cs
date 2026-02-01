@@ -15,7 +15,7 @@ public class FocusUiElement : MonoBehaviour
     public void Focus()
     {
         previousSelectedObject = EventSystem.current.currentSelectedGameObject;
-
+        
         gameObject.SetActive(true);
         
         EventSystem.current.SetSelectedGameObject(null);

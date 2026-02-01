@@ -18,6 +18,6 @@ public class RockingChair : MonoBehaviour
     void Update()
     {
         float angle = Mathf.Sin(Time.time * rockingSpeed) * rockingAngle;
-        transform.rotation = initialRotation * Quaternion.Euler(angle, 0, 0);
+        transform.rotation = initialRotation * Quaternion.Euler(0, angle, 0);
     }
 }
