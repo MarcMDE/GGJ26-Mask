@@ -4,6 +4,7 @@ using UnityEngine;
 public class MaskSwitchController : InteractionController
 {
     ModelController factionController;
+    Animator animator;
 
     [SerializeField] private float switchCoolDown = 3f;
 
@@ -12,6 +13,7 @@ public class MaskSwitchController : InteractionController
     void Awake()
     {
         factionController = GetComponent<ModelController>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -55,6 +57,18 @@ public class MaskSwitchController : InteractionController
 
         Debug.Log("ready");
         isSwitchAvailable = false;
+
+        animator.SetBool("SwitchQueued", true);
+
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName("SwitchMask") )
+        {
+            if (!animator.GetBool("SwitchQueued"))
+            {
+                isSwitchAvailable = true;
+                yield break;
+            }
+            yield return null;
+        }
 
         var otherCharacter = GetClosestCharacter();
 

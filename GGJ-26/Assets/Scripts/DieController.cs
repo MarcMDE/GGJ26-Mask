@@ -14,7 +14,7 @@ public class DieController : MonoBehaviour
 
     void Awake()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void Die()

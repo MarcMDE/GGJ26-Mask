@@ -11,7 +11,7 @@ namespace Mask.Player
 
         void Awake()
         {
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
         }
 
         void Start()

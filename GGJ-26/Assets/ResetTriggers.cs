@@ -19,6 +19,7 @@ public class ResetTriggers : StateMachineBehaviour
     {
         animator.SetBool("EmoteQueued",false);
         animator.SetBool("AttackQueued", false);
+        animator.SetBool("SwitchQueued", false);
         //trigger reset
     }
 

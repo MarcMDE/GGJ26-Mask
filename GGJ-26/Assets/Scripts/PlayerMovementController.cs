@@ -17,16 +17,16 @@ namespace Mask.Player
         public float collisionSlowdown = 0.5f;
         public float recoveryRate = 2.0f;
 
+        Animator animator;
         private Rigidbody rb;
-        private NavMeshAgent navAgent;
         private Vector3 inputDirection;
-        private bool isEmoteActive;
         private float currentSpeedModifier = 1.0f;
-        private bool isAttackActive;
+
 
         new void Awake()
         {
             base.Awake();
+            animator = GetComponentInChildren<Animator>();
             rb = GetComponent<Rigidbody>();
 
             // Setup Rigidbody for physical interactions
@@ -50,9 +50,11 @@ namespace Mask.Player
         void Move()
         {
 
-            if (GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack") ||
-                GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Emote")
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") ||
+                animator.GetCurrentAnimatorStateInfo(0).IsName("Emote")
             ) return;
+
+            animator.SetBool("isWalking", inputDirection.magnitude > 0.05f);
 
             if (inputDirection.magnitude > 0.05f)
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(inputDirection), Time.fixedDeltaTime * rotationSpeed);
