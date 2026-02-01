@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] UnityEngine.UI.Image uiControlsImage;
 
     [Header("Flow settings")]
-    [SerializeField] private int waitForPlayersSeconds = 3;
+    [SerializeField] private int waitForPlayersSeconds = 5;
     [SerializeField] private float loadingTime = 1f;
  
     public static GameStates CurrentGameState { get; private set; }
