@@ -3,10 +3,10 @@ using System.Collections;
 
 namespace Mask.Player
 {
-    public class PlayerAttackController : MonoBehaviour
+    public class PlayerAttackController : InteractionController
     {
         [SerializeField] private float attackCoolDown = 3f;
-        [SerializeField] private float attackConeDotThreshold = 0.6f;
+
         private Animator animator;
         bool isAttackAvailable;
 
@@ -60,28 +60,7 @@ namespace Mask.Player
 
         private void TryToKillCharacter()
         {
-            Collider[] hits = Physics.OverlapSphere(transform.position, 1f, LayerMask.GetMask("Character"));
-
-            GameObject nearestCharacter = null;
-            float nearestValue = -1f;
-
-            foreach (Collider hit in hits)
-            {
-                if (hit.gameObject == this.gameObject) continue;
-
-                Vector3 directionToTarget = (hit.transform.position - transform.position).normalized;
-
-                // 3. Dot Product entre mi frente (Forward) y la dirección al objeto
-                // 1 = exactamente enfrente, 0 = perpendicular, -1 = exactamente detrás
-                float dot = Vector3.Dot(transform.forward, directionToTarget);
-
-                // 4. Seleccionar el que tenga el valor más cercano a 1
-                if (dot > attackConeDotThreshold && dot > nearestValue)
-                {
-                    nearestValue = dot;
-                    nearestCharacter = hit.gameObject;
-                }
-            }
+            var nearestCharacter = GetClosestCharacter();
 
             if (nearestCharacter != null)
             {
