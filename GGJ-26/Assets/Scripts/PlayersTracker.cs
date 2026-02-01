@@ -30,7 +30,7 @@ public class PlayersTracker : MonoBehaviour
     private void OnPlayerKilled(GameObject player)
     {
         NumPlayersAlive--;
-        Destroy(player);
+        player.gameObject.SetActive(false);
         OnNumPlayersAliveChanged?.Invoke();
     }
 
