@@ -210,6 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mask.Player.PlayerAttackController
   attackCoolDown: 3
+  attackConeDotThreshold: 0.6
 --- !u!114 &4768662234700621963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,7 +233,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 0
-  m_Extents: {x: 0.4, y: 1, z: 0.4}
+  m_Extents: {x: 0.45, y: 1, z: 0.45}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1

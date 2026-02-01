@@ -8,8 +8,6 @@ public class AgentGroupEvent : MonoBehaviour
     [SerializeField] private float groupPeriodMin = 5;
     [SerializeField] private float groupPeriodMax = 20;
 
-    [SerializeField] private int clusterCount = 4;
-
     [SerializeField] private NavMeshSurface surface;
 
     [SerializeField] private float minEventDuration = 6;
@@ -64,6 +62,9 @@ public class AgentGroupEvent : MonoBehaviour
         var eventDuration = Random.Range(minEventDuration, maxEventDuration);
 
         var agents = crowdSpawner.GetAgents();
+
+        var clusterCount = crowdSpawner.GetFactionCount();
+
         var agentsPerCluster = agents.Count / clusterCount;
 
         var radius = 1f;
@@ -71,7 +72,7 @@ public class AgentGroupEvent : MonoBehaviour
         var points = NavMeshUtils.GetMultipleSafePoints(bounds, clusterCount, radius, 6, 800);
 
         foreach (var agent in agents) {
-            var index = Random.Range(0, points.Count);
+            var index = agent.GetComponent<ModelController>().GetFaction();
             agent.SetCircleConstraint(points[index], radius);
         
         }

@@ -40,7 +40,9 @@ public class CrowdAgent : MonoBehaviour
     [Header("Animator")]
     private Animator animator;
 
-    private CircleConstraint circleConstraint;  
+    private CircleConstraint circleConstraint;
+
+    private int agentFaction;
 
     public void InitializeBounds(Bounds bounds)
     {
